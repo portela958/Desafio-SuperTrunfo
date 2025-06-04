@@ -1,1 +1,120 @@
 
+typedef struct {
+    char estado;
+    char codigo[4];
+    char nome[50];
+    int populacao;
+    float area;
+    float pib;
+    int pontosTuristicos;
+    float densidade;
+    float pibPerCapita;
+} Carta;
+
+void calcularDados(Carta *c) {
+    c->densidade = c->populacao / c->area;
+    c->pibPerCapita = (c->pib * 1000000000) / c->populacao;
+}
+
+void imprimirCarta(Carta c) {
+    printf("\n--- Carta: %s (%s) ---\n", c.nome, c.codigo);
+    printf("Estado: %c\n", c.estado);
+    printf("População: %d\n", c.populacao);
+    printf("Área: %.2f km²\n", c.area);
+    printf("PIB: %.2f bilhões\n", c.pib);
+    printf("Pontos Turísticos: %d\n", c.pontosTuristicos);
+    printf("Densidade: %.2f hab/km²\n", c.densidade);
+    printf("PIB per Capita: %.2f\n", c.pibPerCapita);
+}
+
+int main() {
+    Carta jogador, maquina;
+    int atributo;
+
+    printf("=== Cadastro da carta do Jogador ===\n");
+    printf("Estado (A-H): ");
+    scanf(" %c", &jogador.estado);
+    printf("Código: ");
+    scanf("%s", jogador.codigo);
+    printf("Nome da Cidade: ");
+    scanf(" %[^\n]", jogador.nome);
+    printf("População: ");
+    scanf("%d", &jogador.populacao);
+    printf("Área (km²): ");
+    scanf("%f", &jogador.area);
+    printf("PIB (bilhões): ");
+    scanf("%f", &jogador.pib);
+    printf("Pontos Turísticos: ");
+    scanf("%d", &jogador.pontosTuristicos);
+    calcularDados(&jogador);
+
+    printf("\n=== Cadastro da carta da Máquina ===\n");
+    printf("Estado (A-H): ");
+    scanf(" %c", &maquina.estado);
+    printf("Código: ");
+    scanf("%s", maquina.codigo);
+    printf("Nome da Cidade: ");
+    scanf(" %[^\n]", maquina.nome);
+    printf("População: ");
+    scanf("%d", &maquina.populacao);
+    printf("Área (km²): ");
+    scanf("%f", &maquina.area);
+    printf("PIB (bilhões): ");
+    scanf("%f", &maquina.pib);
+    printf("Pontos Turísticos: ");
+    scanf("%d", &maquina.pontosTuristicos);
+    calcularDados(&maquina);
+
+    printf("\n=== Sua Carta ===\n");
+    imprimirCarta(jogador);
+
+    printf("\nEscolha o atributo para disputa:\n");
+    printf("1. População\n2. Área\n3. PIB\n4. Pontos Turísticos\n5. Densidade Populacional\n6. PIB per Capita\n");
+    printf("Digite o número do atributo: ");
+    scanf("%d", &atributo);
+
+    float valorJogador, valorMaquina;
+    switch(atributo) {
+        case 1:
+            valorJogador = jogador.populacao;
+            valorMaquina = maquina.populacao;
+            break;
+        case 2:
+            valorJogador = jogador.area;
+            valorMaquina = maquina.area;
+            break;
+        case 3:
+            valorJogador = jogador.pib;
+            valorMaquina = maquina.pib;
+            break;
+        case 4:
+            valorJogador = jogador.pontosTuristicos;
+            valorMaquina = maquina.pontosTuristicos;
+            break;
+        case 5:
+            valorJogador = jogador.densidade;
+            valorMaquina = maquina.densidade;
+            break;
+        case 6:
+            valorJogador = jogador.pibPerCapita;
+            valorMaquina = maquina.pibPerCapita;
+            break;
+        default:
+            printf("Atributo inválido.\n");
+            return 1;
+    }
+
+    printf("\n=== Carta da Máquina ===\n");
+    imprimirCarta(maquina);
+
+    printf("\nResultado da Rodada:\n");
+    if (valorJogador > valorMaquina)
+        printf("Você venceu!\n");
+    else if (valorJogador < valorMaquina)
+        printf("A máquina venceu!\n");
+    else
+        printf("Empate!\n");
+
+    return 0;
+}
+
